@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rklein <rklein@student.hive.fi>             +#+  +:+       +#+        */
+/*   By: rklein <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/08 15:50:51 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/08 15:51:22 by rklein           ###   ########.fr       */
+/*   Created: 2019/10/17 12:42:24 by rklein            #+#    #+#             */
+/*   Updated: 2019/10/29 17:00:50 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-void	ft_env(t_env *env)
+char	*ft_strcpy(char *dst, const char *src)
 {
-	while (env)
+	int	i;
+
+	i = 0;
+	while (src[i])
 	{
-		ft_putendl(env->var);
-		env = env->next;
+		dst[i] = src[i];
+		i++;
 	}
+	dst[i] = '\0';
+	return (dst);
 }

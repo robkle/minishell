@@ -1,22 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rklein <rklein@student.hive.fi>             +#+  +:+       +#+        */
+/*   By: rklein <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/08 15:50:51 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/08 15:51:22 by rklein           ###   ########.fr       */
+/*   Created: 2020/06/11 13:36:01 by rklein            #+#    #+#             */
+/*   Updated: 2020/06/12 11:57:57 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_env(t_env *env)
+void	ft_execute(char **params, char **envp)
 {
-	while (env)
-	{
-		ft_putendl(env->var);
-		env = env->next;
+	char	*cmd;
+
+	if (fork() != 0)
+		wait(NULL);
+	else
+	{ 
+		cmd = ft_strjoin("/bin/", params[0]);
+		if (execve(cmd, params, envp) == -1)
+		{
+			ft_printf("minishell: command not found: %s\n", params[0]);
+			exit(1);
+		}
 	}
 }

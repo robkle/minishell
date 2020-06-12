@@ -1,22 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rklein <rklein@student.hive.fi>             +#+  +:+       +#+        */
+/*   By: rklein <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/08 15:50:51 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/08 15:51:22 by rklein           ###   ########.fr       */
+/*   Created: 2019/10/19 18:53:15 by rklein            #+#    #+#             */
+/*   Updated: 2019/10/19 19:00:30 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <unistd.h>
 
-void	ft_env(t_env *env)
+void	ft_putchar(char c)
 {
-	while (env)
-	{
-		ft_putendl(env->var);
-		env = env->next;
-	}
+	write(1, &c, 1);
 }

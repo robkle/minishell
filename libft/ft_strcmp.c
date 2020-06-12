@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rklein <rklein@student.hive.fi>             +#+  +:+       +#+        */
+/*   By: rklein <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/08 15:50:51 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/08 15:51:22 by rklein           ###   ########.fr       */
+/*   Created: 2019/10/15 16:18:27 by rklein            #+#    #+#             */
+/*   Updated: 2019/10/29 17:12:48 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-void	ft_env(t_env *env)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	while (env)
+	int	i;
+
+	i = 0;
+	while (s1[i] == s2[i])
 	{
-		ft_putendl(env->var);
-		env = env->next;
+		if (!s1[i])
+			return (0);
+		i++;
 	}
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }

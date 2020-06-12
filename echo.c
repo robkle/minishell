@@ -1,9 +1,8 @@
 #include "minishell.h"
 
-static char	*ft_envcpy(char *dst, char *var, t_env *env)
+char	*ft_envcpy(char *dst, char *var, t_env *env)
 {
 	int	len;
-	int	i;
 
 	len = ft_strlen(var);
 	while (env)
@@ -12,7 +11,7 @@ static char	*ft_envcpy(char *dst, char *var, t_env *env)
 			return (ft_strcpy(dst, &env->var[len + 1]));
 		env = env->next;
 	}
-	dst[1] = '\0';
+	dst[0] = '\0';
 	return (dst);
 }
 

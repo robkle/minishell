@@ -1,22 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rklein <rklein@student.hive.fi>             +#+  +:+       +#+        */
+/*   By: rklein <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/08 15:50:51 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/08 15:51:22 by rklein           ###   ########.fr       */
+/*   Created: 2019/10/21 13:48:59 by rklein            #+#    #+#             */
+/*   Updated: 2019/10/22 16:02:38 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	ft_env(t_env *env)
+char	*ft_strnew(size_t size)
 {
-	while (env)
+	char	*str;
+	size_t	i;
+
+	str = (char*)malloc(sizeof(*str) * size + 1);
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (i < size)
 	{
-		ft_putendl(env->var);
-		env = env->next;
+		str[i] = '\0';
+		i++;
 	}
+	str[i] = '\0';
+	return (str);
 }

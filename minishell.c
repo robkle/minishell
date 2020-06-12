@@ -1,23 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/08 16:40:48 by rklein            #+#    #+#             */
+/*   Updated: 2020/06/12 14:36:37 by rklein           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static int     ft_builtin(char **params, t_env **env)
-{
-        if (ft_strcmp(params[0], "cd") == 0)
-                ft_cd(params, *env);
-	else if (ft_strcmp(params[0], "env") == 0)
-		ft_env(*env);
-	else if (ft_strcmp(params[0], "setenv") == 0)
-		ft_setenv(params, *env);
-	else if (ft_strcmp(params[0], "unsetenv") == 0)
-		ft_unsetenv(params, env);
-        else if (ft_strcmp(params[0], "echo") == 0)
-                ft_echo(params, *env);
-	else if (strcmp(params[0], "exit") == 0)
-		exit(1); //create a free function
-        else
-                return (0);
-        return (1);
-}
 static void	type_prompt(int prompt)
 {
 	const char *CLEAR_SCREEN_ANSI;
@@ -32,7 +26,6 @@ static void	type_prompt(int prompt)
 		write(1, "> ", 2);
 	else
 	{
-		//Displays current working dir in prompt
 		getcwd(cwd, sizeof(cwd));
 		write(1, "minishell: ", 11);
 		ft_putstr(cwd);
@@ -88,38 +81,40 @@ static	t_env	*ft_create_env(char **envp)
 	return (begin);
 }
 
+static void	ft_free_params(char **params)
+{
+	int	i;
+
+	i = -1;
+	while (params[++i])
+		free(params[i]);
+	free(params);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
-	char	*cmd;
 	char	**params;
 	t_env	*env;
 	int	bltin;
 	int	prompt;
 	
-	env = ft_create_env(envp);
-	prompt = 0;
-	while (1)
+	
+	if (argc && argv[0])
 	{
-		type_prompt(prompt++);
-		params = read_command();
-		if (params)
+		env = ft_create_env(envp);
+		prompt = 0;
+		while (1)
 		{
-			bltin = ft_builtin(params, &env);
-			if (bltin == -1) //Temporary solution for exit
-				return (0);
-			else if (bltin == 0) //external program
+			type_prompt(prompt++);
+			params = read_command();
+			if (params)
 			{
-				if (fork() != 0)
-					wait(NULL);
-				else
-				{ 
-					cmd = ft_strjoin("/bin/", params[0]);
-					execve(cmd, params, envp);
-				}
+				bltin = ft_builtin(params, &env);
+				if (bltin == 1)
+					ft_execute(params, envp);
 			}
-			//free params and cmd
+			ft_free_params(params);
 		}
 	}
-	//free params and cmd
 	return (0);
 }
