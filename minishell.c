@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 16:40:48 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/18 10:09:11 by rklein           ###   ########.fr       */
+/*   Updated: 2020/06/18 16:36:21 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,63 +59,28 @@ static char	**read_command(void)
 	return (ft_param_prep(line));
 }
 
-static	t_env	*ft_create_env(char **envp)
-{
-	t_env	*env;
-	t_env	*begin;
-	int	i;
-
-	i = -1;
-	env = malloc(sizeof(t_env));
-	env->var = (char*)malloc(sizeof(char) * (PATH_MAX + 1));
-	ft_strcpy(env->var, envp[++i]);
-	begin = env;
-	while (envp[++i])
-	{
-		env->next = malloc(sizeof(t_env));
-		env = env->next;
-		env->var = (char*)malloc(sizeof(char) * (PATH_MAX + 1));
-		ft_strcpy(env->var, envp[i]);
-	}
-	env->next = NULL;
-	return (begin);
-}
-
-static void	ft_free_params(char **params)
-{
-	int	i;
-
-	i = -1;
-	if (params)
-	{
-		while (params[++i])
-			free(params[i]);
-		free(params);
-	}
-}
-
 int	main(int argc, char **argv, char **envp)
 {
-	char	**params;
-	t_env	*env;
-	int	bltin;
-	int	prompt;
+	t_sh	*sh;
+	int		bltin;
+	int		prompt;
 	
+	if (!(sh = (t_sh*)malloc(sizeof(t_sh))))
+		return (0);
 	if (argc && argv[0])
 	{
-		env = ft_create_env(envp);
+		sh->env = ft_arrcpy(envp);
 		prompt = 0;
 		while (1)
 		{
 			type_prompt(prompt++);
-			params = read_command();
-			if (params && *params)
+			sh->par = read_command();
+			if (sh->par && sh->par[0])
 			{
-				bltin = ft_builtin(params, &env);
+				bltin = ft_builtin(sh);
 				if (bltin == 1)
-					ft_execute(params, envp);
+					ft_execute(sh);
 			}
-			ft_free_params(params);
 		}
 	}
 	return (0);

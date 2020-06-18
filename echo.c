@@ -1,61 +1,62 @@
 #include "minishell.h"
 
-char	*ft_envcpy(char *dst, char *var, t_env *env)
+char	*ft_envcpy(char *dst, char *var, char **env)
 {
 	int	len;
+	int	i;
 
 	len = ft_strlen(var);
-	while (env)
+	i = -1;
+	while (env[++i])
 	{
-		if (ft_strncmp(var, env->var, len) == 0 && env->var[len] == '=')
-			return (ft_strcpy(dst, &env->var[len + 1]));
-		env = env->next;
+		if (ft_strncmp(var, env[i], len) == 0 && env[i][len] == '=')
+			return (ft_strcpy(dst, &env[i][len + 1]));
 	}
 	dst[0] = '\0';
 	return (dst);
 }
 
-static void	ft_write(char **params, t_env *env, int x)
+static void	ft_write(t_sh *sh, int x)
 {
 	int	fd;
 	int	i;
 	char	env_var[PATH_MAX];
 	_Bool	space;
 	
-	fd = open(params[x + 1], O_CREAT | O_WRONLY | O_APPEND, 0644); //if fd == -1 etc.
+	fd = open(sh->par[x + 1], O_CREAT | O_WRONLY | O_APPEND, 0644); //if fd == -1 etc.
 	i = 0;
 	space = 0;
-	while (params[++i])
+	while (sh->par[++i])
 	{
 		if (i != x && i != x + 1)
 		{
 			if (space)
 				write(fd, " ", 1);
 			space = 1;
-			if (params[i][0] == '$')
+			if (sh->par[i][0] == '$')
 			{
-				ft_envcpy(env_var, &params[i][1], env);
+				ft_envcpy(env_var, &sh->par[i][1], sh->env);
 				write(fd, env_var, ft_strlen(env_var));
 			}
 			else
-				write(fd, params[i], ft_strlen(params[i]));
+				write(fd, sh->par[i], ft_strlen(sh->par[i]));
 		}
 	}
 	write(fd, "\n", 1);
 	close (fd);
 }
 
-static void	ft_trunc(char **params, t_env *env, int x)
+static void	ft_trunc(t_sh *sh, int x)
 {
 	int	fd;
 
-	fd = open(params[x + 1], O_CREAT | O_TRUNC | O_WRONLY, 0644); //if fd == -1 etc.
+	fd = open(sh->par[x + 1], O_CREAT | O_TRUNC | O_WRONLY, 0644); //if fd == -1 etc.
 	write(fd, NULL, 0);
 	close (fd);
-	ft_write(params, env, x);
+	ft_write(sh, x);
 } 
 
-static void	ft_print_echo(char **params, t_env *env)
+static void	ft_print_echo(t_sh *sh)
 {
 	int	i;
 	char	env_var[PATH_MAX];
@@ -63,39 +64,39 @@ static void	ft_print_echo(char **params, t_env *env)
 	
 	i = 0;
 	space = 0;
-	while (params[++i])
+	while (sh->par[++i])
 	{
 		if (space)
 			write(1, " ", 1);
 		space = 1;
-		if (params[i][0] == '$')
+		if (sh->par[i][0] == '$')
 		{
-			ft_envcpy(env_var, &params[i][1], env);
+			ft_envcpy(env_var, &sh->par[i][1], sh->env);
 			ft_putstr(env_var);
 		}
 		else
-			ft_putstr(params[i]);
+			ft_putstr(sh->par[i]);
 	}
 	write(1, "\n", 1);
 }
 
-void	ft_echo(char **params, t_env *env)
+void	ft_echo(t_sh *sh)
 {
 	int	i;
 
 	i = 0;
-	while (params[++i])
+	while (sh->par[++i])
 	{
-		if (ft_strcmp(params[i], ">") == 0)
+		if (ft_strcmp(sh->par[i], ">") == 0)
 		{
-			ft_trunc(params, env, i);
+			ft_trunc(sh, i);
 			return ;
 		}
-		if (ft_strcmp(params[i], ">>") == 0)
+		if (ft_strcmp(sh->par[i], ">>") == 0)
 		{
-			ft_write(params, env, i);
+			ft_write(sh, i);
 			return;
 		}
 	}
-	ft_print_echo(params, env);
+	ft_print_echo(sh);
 }

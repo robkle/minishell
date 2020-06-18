@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:27:26 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/17 14:57:35 by rklein           ###   ########.fr       */
+/*   Updated: 2020/06/18 16:36:14 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,25 @@
 # include <stdbool.h>
 # include "libft/libft.h"
 
-typedef struct	s_env
+typedef struct	s_sh
 {
-	char			*var;
-	struct s_env	*next;
-}				t_env;
+	char	**par;
+	char	**env;
+}				t_sh;
 
 int				ft_spacetab(char c);
-int				ft_builtin(char **params, t_env **env);
-void			ft_execute(char **params, char **env);
+int				ft_builtin(t_sh *sh);
+void			ft_execute(t_sh *sh);
+char			**ft_arrcpy(char **src);
 int				ft_findslash(char *str);
-void			ft_cd(char **params, t_env *env);
-void			ft_cd_env(char *path, t_env *env);
-void			ft_env(t_env *env);
-char			*ft_envcpy(char *dst, char *var, t_env *env);
-void			ft_setenv(char **params, t_env *env);
-void			ft_unsetenv(char **params, t_env **env);
+void			ft_cd(t_sh *sh);
+void			ft_cd_env(t_sh *sh);
+void			ft_env(char **env);
+void			ft_setenv(t_sh *sh);
+void			ft_unsetenv(t_sh *sh);
 char			**ft_param_prep(char const *s);
 char			ft_qt_track(char s, char q);
-void			ft_echo(char **params, t_env *env);
+void			ft_echo(t_sh *sh);
+void			ft_free_array(char **array);
 
 #endif

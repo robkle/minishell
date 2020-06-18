@@ -6,13 +6,13 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 16:38:41 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/12 13:35:34 by rklein           ###   ########.fr       */
+/*   Updated: 2020/06/18 16:29:34 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_cd_env(char *path, t_env *env)
+void	ft_cd_env(char *path, char **env)//REWRITE COMPLETELY. "MANUALLY" UPDATE ENV NOT VIA SETENV!! 
 {
 	char	*oldpwd[3];
 	char	*pwd[3];

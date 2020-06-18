@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/17 09:49:10 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/17 10:53:49 by rklein           ###   ########.fr       */
+/*   Updated: 2020/06/18 16:36:18 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,3 +28,32 @@ int	ft_spacetab(char c)
 	return (c == ' ' || c == '\t' ? 1 : 0);
 }
 
+char	**ft_arrcpy(char **src)
+{
+	char	**dst;
+	int		i;
+
+	i = 0;
+	while (src[i])
+		i++;
+	if (!(dst = (char**)malloc(sizeof(char*) * i)))
+		return (NULL);
+	i = -1;
+	while (src[++i])
+		dst[i] = ft_strdup(src[i]);
+	dst[i] = NULL;
+	return (dst);
+}
+
+void	ft_free_array(char **array)
+{
+	int	i;
+
+	i = -1;
+	if (array)
+	{
+		while (array[++i])
+			free(array[i]);
+		free(array);
+	}
+}

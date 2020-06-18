@@ -6,25 +6,25 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 14:19:29 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/17 14:57:19 by rklein           ###   ########.fr       */
+/*   Updated: 2020/06/18 16:22:52 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int     ft_builtin(char **params, t_env **env)
+int     ft_builtin(t_sh *sh)
 {
-	if (ft_strcmp(params[0], "cd") == 0)
-		ft_cd(params, *env);
-	else if (ft_strcmp(params[0], "env") == 0)
-		ft_env(*env);
-	else if (ft_strcmp(params[0], "setenv") == 0)
-		ft_setenv(params, *env);
-	else if (ft_strcmp(params[0], "unsetenv") == 0)
-		ft_unsetenv(params, env);
-	else if (ft_strcmp(params[0], "echo") == 0)
-		ft_echo(params, *env);
-	else if (strcmp(params[0], "exit") == 0)
+	if (ft_strcmp(sh->par[0], "cd") == 0)
+		ft_cd(sh);
+	else if (ft_strcmp(sh->par[0], "env") == 0)
+		ft_env(sh->env);
+	else if (ft_strcmp(sh->par[0], "setenv") == 0)
+		ft_setenv(sh);
+	else if (ft_strcmp(sh->par[0], "unsetenv") == 0)
+		ft_unsetenv(sh);
+	else if (ft_strcmp(sh->par[0], "echo") == 0)
+		ft_echo(sh);
+	else if (strcmp(sh->par[0], "exit") == 0)
 		exit(1);
 	else
 		return (1);

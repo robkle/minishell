@@ -6,13 +6,13 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 13:22:04 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/12 13:29:00 by rklein           ###   ########.fr       */
+/*   Updated: 2020/06/18 16:32:31 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	ft_change_dir(char *path, t_env *env)
+static void	ft_change_dir(char *path, char **env)
 {
 	struct stat	buf;
 	char		*errmsg;
@@ -34,16 +34,16 @@ static void	ft_change_dir(char *path, t_env *env)
 	}
 }
 
-static char	*ft_check_space(char **params)
+static char	*ft_check_space(char **par)
 {
 	char	path[PATH_MAX];
 	int		i;
 
-	ft_strcpy(path, params[1]);
+	ft_strcpy(path, par[1]);
 	i = 2;
-	while (params[i] && (params[i - 1][ft_strlen(params[i - 1]) - 1] == '\\'))
+	while (par[i] && (par[i - 1][ft_strlen(par[i - 1]) - 1] == '\\'))
 	{
-		ft_strcat(path, params[i]);
+		ft_strcat(path, par[i]);
 		i++;
 	}
 	i = -1;
@@ -55,53 +55,57 @@ static char	*ft_check_space(char **params)
 	return (ft_strdup(path));
 }
 
-static char	*ft_oldpwd(t_env *env)
+static char	*ft_oldpwd(char **env)
 {
-	while (env)
+	int i;
+
+	i= -1;
+	while (env[++i])
 	{
-		if (ft_strncmp(env->var, "OLDPWD", 6) == 0)
-			return (ft_strdup(&env->var[7]));
-		env = env->next;
+		if (ft_strncmp(env[i], "OLDPWD", 6) == 0)
+			return (ft_strdup(&env[i][7]));
 	}
 	return (NULL);
 }
 
-static char	*ft_home_path(t_env *env)
+static char	*ft_home_path(char **env)
 {
-	while (env)
+	int	i;
+
+	i = -1;
+	while (env[++i])
 	{
-		if (ft_strncmp(env->var, "HOME", 4) == 0)
-			return (ft_strdup(&env->var[5]));
-		env = env->next;
+		if (ft_strncmp(env[i], "HOME", 4) == 0)
+			return (ft_strdup(&env[i][5]));
 	}
 	return (NULL);
 }
 
-void	ft_cd(char **params, t_env *env)
+void	ft_cd(t_sh *sh)
 {
 	char	*home;
 	char	*path;
 	char	env_var[PATH_MAX];
 
-	if (!params[1])
-		path = ft_home_path(env);
-	else if (params[1][0] == '~')
+	if (!sh->par[1])
+		path = ft_home_path(sh->env);
+	else if (sh->par[1][0] == '~')
 	{
-		home = ft_home_path(env);
-		path = ft_strjoin(home, &params[1][1]);
+		home = ft_home_path(sh->env);
+		path = ft_strjoin(home, &sh->par[1][1]);
 		free(home);
 	}
-	else if (params[1][0] == '$')
+	else if (sh->par[1][0] == '$')
 	{
-		ft_envcpy(env_var, &params[1][1], env);
+		ft_envcpy(env_var, &sh->par[1][1], sh->env);
 		path = ft_strdup(env_var);
 	}
-	else if (ft_strcmp(params[1], "-") == 0)
-		path = ft_oldpwd(env);
-	else if (params[2])
-		path = ft_check_space(params);
+	else if (ft_strcmp(sh->par[1], "-") == 0)
+		path = ft_oldpwd(sh->env);
+	else if (sh->par[2])
+		path = ft_check_space(sh->par);
 	else
-		path = ft_strdup(params[1]);
-	ft_change_dir(path, env);
+		path = ft_strdup(sh->par[1]);
+	ft_change_dir(path, sh->env);
 	free(path);
 }
