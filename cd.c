@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	ft_change_dir(char *path, char **env)
+static void	ft_change_dir(char *path, t_sh *sh)
 {
 	struct stat	buf;
 	char		*errmsg;
@@ -30,7 +30,7 @@ static void	ft_change_dir(char *path, char **env)
 			else if (access(path, R_OK) == -1)
 				printf("%s %s: Permission denied\n", errmsg, path);
 		}
-		ft_cd_env(path, env);
+		ft_cd_env(path, sh);
 	}
 }
 
@@ -106,6 +106,6 @@ void	ft_cd(t_sh *sh)
 		path = ft_check_space(sh->par);
 	else
 		path = ft_strdup(sh->par[1]);
-	ft_change_dir(path, sh->env);
+	ft_change_dir(path, sh);
 	free(path);
 }

@@ -35,13 +35,14 @@ void			ft_execute(t_sh *sh);
 char			**ft_arrcpy(char **src);
 int				ft_findslash(char *str);
 void			ft_cd(t_sh *sh);
-void			ft_cd_env(t_sh *sh);
+void			ft_cd_env(char *path, t_sh *sh);
 void			ft_env(char **env);
 void			ft_setenv(t_sh *sh);
 void			ft_unsetenv(t_sh *sh);
 char			**ft_param_prep(char const *s);
 char			ft_qt_track(char s, char q);
 void			ft_echo(t_sh *sh);
+char			*ft_envcpy(char *dst, char *var, char **env);
 void			ft_free_array(char **array);
 
 #endif

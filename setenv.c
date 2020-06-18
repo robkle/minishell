@@ -37,6 +37,7 @@ static void	ft_setenv_new(t_sh *sh)
 void	ft_setenv(t_sh *sh)
 {
 	int	i;
+	char	*tmp;
 
 	if (!sh->par[1])
 	{
@@ -48,11 +49,11 @@ void	ft_setenv(t_sh *sh)
 	{
 		if (strncmp(sh->env[i], sh->par[1], ft_strlen(sh->par[1])) == 0)
 		{
-			ft_strclr(sh->env[i]);
-			ft_strcat(sh->env[i], sh->par[1]);
-			ft_strcat(sh->env[i], "=");
+			free(sh->env[i]);
+			tmp = ft_strjoin(sh->par[1], "=");
 			if (sh->par[2])
-				ft_strcat(sh->env[i], sh->par[2]); 
+				sh->env[i] = ft_strjoin(tmp, sh->par[2]);
+			free(tmp); 
 			break;
 		}
 	}

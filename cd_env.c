@@ -12,23 +12,27 @@
 
 #include "minishell.h"
 
-void	ft_cd_env(char *path, char **env)//REWRITE COMPLETELY. "MANUALLY" UPDATE ENV NOT VIA SETENV!! 
+static void	ft_cd_path(t_sh *sh, char *str)
 {
-	char	*oldpwd[3];
-	char	*pwd[3];
+	int	i;
+	char	pwd[PATH_MAX];
 	
-	oldpwd[1] = ft_strdup("OLDPWD");
-	oldpwd[2] = ft_strnew(PATH_MAX);
-	getcwd(oldpwd[2], PATH_MAX);
-	ft_setenv(oldpwd, env);
+	i = -1;
+	while (sh->env[++i])
+	{
+		if (strncmp(sh->env[i], str, ft_strlen(str)) == 0)
+		{
+			free(sh->env[i]);
+			getcwd(pwd, PATH_MAX);
+			sh->env[i] = ft_strjoin(str, pwd);
+			break;
+		}
+	}
+}
+
+void	ft_cd_env(char *path, t_sh *sh)
+{
+	ft_cd_path(sh, "OLDPWD=");
 	chdir(path);
-	pwd[1] = ft_strdup("PWD");
-	pwd[2] = ft_strnew(PATH_MAX);
-	getcwd(pwd[2] , PATH_MAX);
-	if (ft_strcmp(path, ".") != 0)
-		ft_setenv(pwd, env);
-	free(oldpwd[1]);
-	free(oldpwd[2]);
-	free(pwd[1]);
-	free(pwd[2]);
+	ft_cd_path(sh, "PWD=");
 }
