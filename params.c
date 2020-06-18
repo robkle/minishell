@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 13:43:55 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/12 14:21:30 by rklein           ###   ########.fr       */
+/*   Updated: 2020/06/17 10:12:56 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int		ft_param_count(char const *s)
 	char	qt;
 
 	i = 0;
-	while (s[i] && s[i] == ' ')
+	while (s[i] && ft_spacetab(s[i]))
 		i++;
 	if (s[i] == '\0')
 		return (0);
@@ -41,7 +41,8 @@ static int		ft_param_count(char const *s)
 	while (s[i])
 	{
 		qt = ft_qt_track(s[i], qt);
-		if (qt == 0 && (s[i] == ' ' && s[i + 1] != ' ' && s[i + 1] != '\0'))
+		if (qt == 0 && (ft_spacetab(s[i]) && !ft_spacetab(s[i + 1]) &&
+					s[i + 1] != '\0'))
 			count++;
 		i++;
 	}
@@ -59,7 +60,7 @@ static int		ft_char_count(char const *s)
 	while (s[i])
 	{
 		qt = ft_qt_track(s[i], qt);
-		if (s[i] == ' ' && qt == 0)
+		if (ft_spacetab(s[i]) && qt == 0)
 			break;
 		i++;
 	}
@@ -99,7 +100,7 @@ char	**ft_param_prep(char const *s)
 	x = -1;
 	while (*s)
 	{
-		while (*s && *s == ' ')
+		while (*s && ft_spacetab(*s))
 			s++;
 		if (*s)
 		{
@@ -107,7 +108,7 @@ char	**ft_param_prep(char const *s)
 				return (NULL);
 			qt = 0;
 			y = 0;
-			while (*s && !(*s == ' ' && qt == 0))
+			while (*s && !(ft_spacetab(*s) && qt == 0))
 			{
 				qt = ft_qt_track(*s, qt);
 				pr[x][y++] = *s++;

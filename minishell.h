@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:27:26 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/12 14:22:24 by rklein           ###   ########.fr       */
+/*   Updated: 2020/06/17 14:57:35 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ typedef struct	s_env
 	struct s_env	*next;
 }				t_env;
 
+int				ft_spacetab(char c);
 int				ft_builtin(char **params, t_env **env);
 void			ft_execute(char **params, char **env);
+int				ft_findslash(char *str);
 void			ft_cd(char **params, t_env *env);
 void			ft_cd_env(char *path, t_env *env);
 void			ft_env(t_env *env);

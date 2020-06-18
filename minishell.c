@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 16:40:48 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/12 14:40:09 by rklein           ###   ########.fr       */
+/*   Updated: 2020/06/18 10:09:11 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static char	**read_command(void)
 	}
 	if (count == 0)
 		return (NULL);
-	line[count] = '\0'; 
+	line[count] = '\0';
 	return (ft_param_prep(line));
 }
 
@@ -86,9 +86,12 @@ static void	ft_free_params(char **params)
 	int	i;
 
 	i = -1;
-	while (params[++i])
-		free(params[i]);
-	free(params);
+	if (params)
+	{
+		while (params[++i])
+			free(params[i]);
+		free(params);
+	}
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -98,7 +101,6 @@ int	main(int argc, char **argv, char **envp)
 	int	bltin;
 	int	prompt;
 	
-	
 	if (argc && argv[0])
 	{
 		env = ft_create_env(envp);
@@ -107,7 +109,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			type_prompt(prompt++);
 			params = read_command();
-			if (params)
+			if (params && *params)
 			{
 				bltin = ft_builtin(params, &env);
 				if (bltin == 1)
