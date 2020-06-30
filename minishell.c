@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 16:40:48 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/18 16:36:21 by rklein           ###   ########.fr       */
+/*   Updated: 2020/06/30 14:53:19 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,10 @@
 
 static void	type_prompt(int prompt)
 {
-	const char *CLEAR_SCREEN_ANSI;
 	char		cwd[PATH_MAX];
 
 	if (prompt == 0)
-	{
-		CLEAR_SCREEN_ANSI = " \e[1;1H\e[2J";//interprets as commmand not character code
-		write(STDOUT_FILENO, CLEAR_SCREEN_ANSI, 12);
-	}
+		write(STDOUT_FILENO, "\e[1;1H\e[2J", 12);
 	if (prompt == -1)
 		write(1, "> ", 2);
 	else
@@ -36,7 +32,7 @@ static void	type_prompt(int prompt)
 static char	**read_command(void)
 {
 	char	line[1024];
-	int	count;
+	int		count;
 	char	buf;
 	char	qt;
 
@@ -47,7 +43,7 @@ static char	**read_command(void)
 	{
 		qt = ft_qt_track(buf, qt);
 		if (buf == '\n' && qt == 0)
-			break;
+			break ;
 		else if (buf == '\n' && qt != 0)
 			type_prompt(-1);
 		line[count++] = buf;
@@ -59,29 +55,21 @@ static char	**read_command(void)
 	return (ft_param_prep(line));
 }
 
-int	main(int argc, char **argv, char **envp)
+void		ft_minishell(t_sh *sh)
 {
-	t_sh	*sh;
-	int		bltin;
 	int		prompt;
-	
-	if (!(sh = (t_sh*)malloc(sizeof(t_sh))))
-		return (0);
-	if (argc && argv[0])
+	int		bltin;
+
+	prompt = 0;
+	while (1)
 	{
-		sh->env = ft_arrcpy(envp);
-		prompt = 0;
-		while (1)
+		type_prompt(prompt++);
+		sh->par = read_command();
+		if (sh->par && sh->par[0])
 		{
-			type_prompt(prompt++);
-			sh->par = read_command();
-			if (sh->par && sh->par[0])
-			{
-				bltin = ft_builtin(sh);
-				if (bltin == 1)
-					ft_execute(sh);
-			}
+			bltin = ft_builtin(sh);
+			if (bltin == 1)
+				ft_execute(sh);
 		}
 	}
-	return (0);
 }

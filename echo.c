@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/30 15:11:15 by rklein            #+#    #+#             */
+/*   Updated: 2020/06/30 15:18:54 by rklein           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-char	*ft_envcpy(char *dst, char *var, char **env)
+char		*ft_envcpy(char *dst, char *var, char **env)
 {
 	int	len;
 	int	i;
@@ -18,12 +30,12 @@ char	*ft_envcpy(char *dst, char *var, char **env)
 
 static void	ft_write(t_sh *sh, int x)
 {
-	int	fd;
-	int	i;
+	int		fd;
+	int		i;
 	char	env_var[PATH_MAX];
 	_Bool	space;
-	
-	fd = open(sh->par[x + 1], O_CREAT | O_WRONLY | O_APPEND, 0644); //if fd == -1 etc.
+
+	fd = open(sh->par[x + 1], O_CREAT | O_WRONLY | O_APPEND, 0644);
 	i = 0;
 	space = 0;
 	while (sh->par[++i])
@@ -43,25 +55,25 @@ static void	ft_write(t_sh *sh, int x)
 		}
 	}
 	write(fd, "\n", 1);
-	close (fd);
+	close(fd);
 }
 
 static void	ft_trunc(t_sh *sh, int x)
 {
 	int	fd;
 
-	fd = open(sh->par[x + 1], O_CREAT | O_TRUNC | O_WRONLY, 0644); //if fd == -1 etc.
+	fd = open(sh->par[x + 1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	write(fd, NULL, 0);
-	close (fd);
+	close(fd);
 	ft_write(sh, x);
-} 
+}
 
 static void	ft_print_echo(t_sh *sh)
 {
-	int	i;
+	int		i;
 	char	env_var[PATH_MAX];
 	_Bool	space;
-	
+
 	i = 0;
 	space = 0;
 	while (sh->par[++i])
@@ -80,7 +92,7 @@ static void	ft_print_echo(t_sh *sh)
 	write(1, "\n", 1);
 }
 
-void	ft_echo(t_sh *sh)
+void		ft_echo(t_sh *sh)
 {
 	int	i;
 
@@ -95,7 +107,7 @@ void	ft_echo(t_sh *sh)
 		if (ft_strcmp(sh->par[i], ">>") == 0)
 		{
 			ft_write(sh, i);
-			return;
+			return ;
 		}
 	}
 	ft_print_echo(sh);

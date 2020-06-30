@@ -1,38 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd_env.c                                           :+:      :+:    :+:   */
+/*   shell_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/08 16:38:41 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/30 15:11:06 by rklein           ###   ########.fr       */
+/*   Created: 2020/06/30 10:02:01 by rklein            #+#    #+#             */
+/*   Updated: 2020/06/30 14:53:38 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	ft_cd_path(t_sh *sh, char *str)
+void	ft_shellenv(t_sh *sh, char *av)
 {
+	char	cwd[PATH_MAX];
+	char	*tmp[2];
 	int		i;
-	char	pwd[PATH_MAX];
 
+	getcwd(cwd, sizeof(cwd));
+	tmp[0] = ft_strcmp(cwd, "/") ? ft_strjoin(cwd, "/") : ft_strdup("/");
 	i = -1;
 	while (sh->env[++i])
 	{
-		if (strncmp(sh->env[i], str, ft_strlen(str)) == 0)
+		if (!ft_strncmp(sh->env[i], "SHELL=", 6))
 		{
 			free(sh->env[i]);
-			getcwd(pwd, PATH_MAX);
-			sh->env[i] = ft_strjoin(str, pwd);
+			tmp[1] = ft_strjoin("SHELL=", tmp[0]);
+			sh->env[i] = ft_strjoin(tmp[1], av);
+			free(tmp[1]);
 			break ;
 		}
 	}
-}
-
-void		ft_cd_env(char *path, t_sh *sh)
-{
-	ft_cd_path(sh, "OLDPWD=");
-	chdir(path);
-	ft_cd_path(sh, "PWD=");
+	free(tmp[0]);
 }

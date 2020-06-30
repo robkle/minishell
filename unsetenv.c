@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/17 16:15:31 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/18 16:36:12 by rklein           ###   ########.fr       */
+/*   Updated: 2020/06/30 14:44:04 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	ft_unsetenv(t_sh *sh)
 	j = 0;
 	while (sh->env[i])
 	{
-		if (ft_strncmp(sh->env[i], sh->par[1], len) == 0 && sh->env[i][len] == '=')
+		if (ft_strncmp(sh->env[i], sh->par[1], len) == 0 &&
+				sh->env[i][len] == '=')
 			i++;
 		if (sh->env[i])
 			tmp[j++] = ft_strdup(sh->env[i++]);

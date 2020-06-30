@@ -6,12 +6,12 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:27:26 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/18 16:36:14 by rklein           ###   ########.fr       */
+/*   Updated: 2020/06/30 15:01:02 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
-#define MINISHELL_H
+# define MINISHELL_H
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
@@ -29,6 +29,8 @@ typedef struct	s_sh
 	char	**env;
 }				t_sh;
 
+void			ft_minishell(t_sh *sh);
+void			ft_shellenv(t_sh *sh, char *av);
 int				ft_spacetab(char c);
 int				ft_builtin(t_sh *sh);
 void			ft_execute(t_sh *sh);

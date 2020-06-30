@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 13:22:04 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/18 16:32:31 by rklein           ###   ########.fr       */
+/*   Updated: 2020/06/30 15:03:22 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	ft_change_dir(char *path, t_sh *sh)
 		else
 		{
 			lstat(path, &buf);
-			if ((buf.st_mode & S_IFMT) != S_IFDIR) 
+			if ((buf.st_mode & S_IFMT) != S_IFDIR)
 				printf("%s %s: Not a directory\n", errmsg, path);
 			else if (access(path, R_OK) == -1)
 				printf("%s %s: Permission denied\n", errmsg, path);
@@ -59,10 +59,10 @@ static char	*ft_oldpwd(char **env)
 {
 	int i;
 
-	i= -1;
+	i = -1;
 	while (env[++i])
 	{
-		if (ft_strncmp(env[i], "OLDPWD", 6) == 0)
+		if (ft_strncmp(env[i], "OLDPWD=", 7) == 0)
 			return (ft_strdup(&env[i][7]));
 	}
 	return (NULL);
@@ -75,13 +75,13 @@ static char	*ft_home_path(char **env)
 	i = -1;
 	while (env[++i])
 	{
-		if (ft_strncmp(env[i], "HOME", 4) == 0)
+		if (ft_strncmp(env[i], "HOME=", 5) == 0)
 			return (ft_strdup(&env[i][5]));
 	}
 	return (NULL);
 }
 
-void	ft_cd(t_sh *sh)
+void		ft_cd(t_sh *sh)
 {
 	char	*home;
 	char	*path;

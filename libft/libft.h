@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/05 12:05:32 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/08 16:40:43 by rklein           ###   ########.fr       */
+/*   Updated: 2020/06/29 14:59:19 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ size_t			ft_strlen(const char *str);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 char			*ft_strncpy(char *dst, const char *src, size_t len);
 char			*ft_strnew(size_t size);
+char			**ft_strsplit(char const *s, char c);
 char			*ft_strsub(char const *s, unsigned int start, size_t len);
 int				ft_toupper(int c);
 

@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 13:30:42 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/18 16:30:48 by rklein           ###   ########.fr       */
+/*   Updated: 2020/06/30 14:41:02 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ static void	ft_setenv_new(t_sh *sh)
 	sh->env = tmp;
 }
 
-void	ft_setenv(t_sh *sh)
+void		ft_setenv(t_sh *sh)
 {
-	int	i;
+	int		i;
 	char	*tmp;
 
 	if (!sh->par[1])
@@ -53,10 +53,10 @@ void	ft_setenv(t_sh *sh)
 			tmp = ft_strjoin(sh->par[1], "=");
 			if (sh->par[2])
 				sh->env[i] = ft_strjoin(tmp, sh->par[2]);
-			free(tmp); 
-			break;
+			free(tmp);
+			break ;
 		}
 	}
-	if (sh->env == NULL)
+	if (sh->env[i] == NULL)
 		ft_setenv_new(sh);
 }

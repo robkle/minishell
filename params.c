@@ -6,13 +6,13 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 13:43:55 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/17 10:12:56 by rklein           ###   ########.fr       */
+/*   Updated: 2020/06/30 15:25:46 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	ft_qt_track(char s, char q)
+char		ft_qt_track(char s, char q)
 {
 	if (s == 34 || s == 39)
 	{
@@ -24,11 +24,14 @@ char	ft_qt_track(char s, char q)
 	return (q);
 }
 
-//params seperated by spaces, unless inside quotation marks
-static int		ft_param_count(char const *s)
+/*
+**params seperated by spaces, unless inside quotation marks
+*/
+
+static int	ft_param_count(char const *s)
 {
-	int	i;
-	int	count;
+	int		i;
+	int		count;
 	char	qt;
 
 	i = 0;
@@ -49,8 +52,11 @@ static int		ft_param_count(char const *s)
 	return (count);
 }
 
-//counts characters except outer quotation marks
-static int		ft_char_count(char const *s)
+/*
+**counts characters except outer quotation marks
+*/
+
+static int	ft_char_count(char const *s)
 {
 	int	i;
 	int	qt;
@@ -61,7 +67,7 @@ static int		ft_char_count(char const *s)
 	{
 		qt = ft_qt_track(s[i], qt);
 		if (ft_spacetab(s[i]) && qt == 0)
-			break;
+			break ;
 		i++;
 	}
 	return (i + 1);
@@ -70,8 +76,8 @@ static int		ft_char_count(char const *s)
 static char	**ft_qt_trim(char **pr)
 {
 	char	*tmp;
-	int	len;
-	int	i;
+	int		len;
+	int		i;
 
 	i = -1;
 	while (pr[++i])
@@ -82,13 +88,13 @@ static char	**ft_qt_trim(char **pr)
 			tmp = ft_strnew(len);
 			ft_strncpy(tmp, &pr[i][1], len);
 			free(pr[i]);
-			pr[i] = tmp; 
+			pr[i] = tmp;
 		}
 	}
 	return (pr);
 }
 
-char	**ft_param_prep(char const *s)
+char		**ft_param_prep(char const *s)
 {
 	char	**pr;
 	int		x;
@@ -104,7 +110,8 @@ char	**ft_param_prep(char const *s)
 			s++;
 		if (*s)
 		{
-			if (!(pr[++x] = (char *)malloc(sizeof(char) * (ft_char_count(s) + 1))))
+			if (!(pr[++x] = (char *)malloc(sizeof(char) *
+							(ft_char_count(s) + 1))))
 				return (NULL);
 			qt = 0;
 			y = 0;
