@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 16:40:48 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/30 14:53:19 by rklein           ###   ########.fr       */
+/*   Updated: 2020/07/01 12:09:35 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,6 @@ void		ft_minishell(t_sh *sh)
 			if (bltin == 1)
 				ft_execute(sh);
 		}
+		ft_free_array(sh->par);
 	}
 }

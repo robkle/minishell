@@ -6,44 +6,49 @@
 /*   By: rklein <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/11 13:36:01 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/30 15:09:15 by rklein           ###   ########.fr       */
+/*   Updated: 2020/07/01 10:28:20 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*ft_findpath(t_sh *sh)
+static char	*ft_makepath(t_sh *sh, char **options)
 {
 	int		i;
-	int		j;
 	char	*cmd;
-	char	**options;
 	char	*path;
 
 	cmd = ft_strjoin("/", sh->par[0]);
 	i = -1;
-	while (sh->env[++i])
+	while (options[++i])
 	{
-		if (!ft_strncmp(sh->env[i], "PATH=", 5))
+		path = ft_strjoin(options[i], cmd);
+		if (access(path, F_OK) == 0)
 		{
-			options = ft_strsplit(&sh->env[i][5], 58);
-			j = -1;
-			while (options[++j])
-			{
-				path = ft_strjoin(options[j], cmd);
-				if (access(path, F_OK) == 0)
-				{
-					free(cmd);
-					ft_free_array(options);
-					return (path);
-				}
-				free(path);
-			}
+			free(cmd);
+			ft_free_array(options);
+			return (path);
 		}
+		free(path);
 	}
 	free(cmd);
 	ft_free_array(options);
 	return (sh->par[0]);
+}
+
+static char	*ft_findpath(t_sh *sh)
+{
+	char	**options;
+	int		i;
+
+	options = NULL;
+	i = -1;
+	while (sh->env[++i])
+	{
+		if (!ft_strncmp(sh->env[i], "PATH=", 5))
+			options = ft_strsplit(&sh->env[i][5], 58);
+	}
+	return (options ? ft_makepath(sh, options) : sh->par[0]);
 }
 
 void		ft_execute(t_sh *sh)

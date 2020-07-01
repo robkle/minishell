@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/30 15:11:15 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/30 15:18:54 by rklein           ###   ########.fr       */
+/*   Updated: 2020/07/01 09:54:03 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,8 @@ static void	ft_write(t_sh *sh, int x)
 	{
 		if (i != x && i != x + 1)
 		{
-			if (space)
+			if (space++)
 				write(fd, " ", 1);
-			space = 1;
 			if (sh->par[i][0] == '$')
 			{
 				ft_envcpy(env_var, &sh->par[i][1], sh->env);

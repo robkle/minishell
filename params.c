@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 13:43:55 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/30 15:25:46 by rklein           ###   ########.fr       */
+/*   Updated: 2020/07/01 11:33:06 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,32 +97,28 @@ static char	**ft_qt_trim(char **pr)
 char		**ft_param_prep(char const *s)
 {
 	char	**pr;
-	int		x;
-	int		y;
+	int		i[2];
 	int		qt;
 
 	if (!s || !(pr = (char **)malloc(sizeof(char *) * (ft_param_count(s) + 1))))
 		return (NULL);
-	x = -1;
+	i[0] = -1;
 	while (*s)
 	{
 		while (*s && ft_spacetab(*s))
 			s++;
-		if (*s)
+		if (!*s)
+			break ;
+		pr[++i[0]] = (char *)malloc(sizeof(char) * (ft_char_count(s) + 1));
+		qt = 0;
+		i[1] = 0;
+		while (*s && !(ft_spacetab(*s) && qt == 0))
 		{
-			if (!(pr[++x] = (char *)malloc(sizeof(char) *
-							(ft_char_count(s) + 1))))
-				return (NULL);
-			qt = 0;
-			y = 0;
-			while (*s && !(ft_spacetab(*s) && qt == 0))
-			{
-				qt = ft_qt_track(*s, qt);
-				pr[x][y++] = *s++;
-			}
-			pr[x][y] = '\0';
+			qt = ft_qt_track(*s, qt);
+			pr[i[0]][i[1]++] = *s++;
 		}
+		pr[i[0]][i[1]] = '\0';
 	}
-	pr[++x] = NULL;
+	pr[++i[0]] = NULL;
 	return (ft_qt_trim(pr));
 }
