@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 14:19:29 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/30 15:03:55 by rklein           ###   ########.fr       */
+/*   Updated: 2020/07/13 10:53:50 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_builtin(t_sh *sh)
 	else if (ft_strcmp(sh->par[0], "echo") == 0)
 		ft_echo(sh);
 	else if (strcmp(sh->par[0], "exit") == 0)
-		exit(1);
+		exit(0);
 	else
 		return (1);
 	return (0);

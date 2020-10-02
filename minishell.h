@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 15:27:26 by rklein            #+#    #+#             */
-/*   Updated: 2020/06/30 15:01:02 by rklein           ###   ########.fr       */
+/*   Updated: 2020/07/13 10:58:39 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct	s_sh
 
 void			ft_minishell(t_sh *sh);
 void			ft_shellenv(t_sh *sh, char *av);
+char			**ft_semicolon_split(char const *s);
 int				ft_spacetab(char c);
 int				ft_builtin(t_sh *sh);
 void			ft_execute(t_sh *sh);

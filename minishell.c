@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 16:40:48 by rklein            #+#    #+#             */
-/*   Updated: 2020/07/07 12:31:03 by rklein           ###   ########.fr       */
+/*   Updated: 2020/07/13 10:55:53 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,25 +52,34 @@ static char	**read_command(void)
 	if (count == 0)
 		return (NULL);
 	line[count] = '\0';
-	return (ft_param_prep(line));
+	return (ft_semicolon_split(line));
 }
 
 void		ft_minishell(t_sh *sh)
 {
 	int		prompt;
 	int		bltin;
+	char	**cmds;
+	char	**tmp;
 
 	prompt = 0;
 	while (1)
 	{
 		type_prompt(prompt++);
-		sh->par = read_command();
-		if (sh->par && sh->par[0])
+		cmds = read_command();
+		tmp = cmds;
+		while (cmds && *cmds)
 		{
-			bltin = ft_builtin(sh);
-			if (bltin == 1)
-				ft_execute(sh);
+			sh->par = ft_param_prep(*cmds);
+			if (sh->par && sh->par[0])
+			{
+				bltin = ft_builtin(sh);
+				if (bltin == 1)
+					ft_execute(sh);
+			}
+			ft_free_array(sh->par);
+			cmds++;
 		}
-		ft_free_array(sh->par);
+		ft_free_array(tmp);
 	}
 }

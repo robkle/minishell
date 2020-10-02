@@ -6,7 +6,7 @@
 #    By: rklein <rlein@student.hive.fi>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/12 10:59:40 by rklein            #+#    #+#              #
-#    Updated: 2020/06/30 13:47:50 by rklein           ###   ########.fr        #
+#    Updated: 2020/07/13 11:04:01 by rklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,13 +14,24 @@ NAME = minishell
 
 FLAGS = -Wall -Wextra -Werror
 
-SRC = main.c minishell.c shell_env.c params.c misc.c builtin.c execute.c cd.c \
-	  cd_env.c env.c setenv.c unsetenv.c echo.c
+SRCS = builtin.c \
+	  cd.c \
+	  cd_env.c \
+	  echo.c \
+	  env.c \
+	  execute.c \
+	  main.c \
+	  minishell.c \
+	  misc.c \
+	  params.c \
+	  semicolon.c \
+	  setenv.c \
+	  shell_env.c \
+	  unsetenv.c
 
-OBJ = main.o minishell.o shell_env.o params.o misc.o builtin.o execute.o cd.o \
-	  cd_env.o env.o setenv.o unsetenv.o echo.o
+OBJ = $(SRCS:.c=.o) 
 
-INC = ./
+INC = ./includes
 
 LIB = libft/libft.a
 
@@ -28,7 +39,7 @@ all : $(NAME)
 
 $(NAME) :
 	make -C libft/
-	gcc $(FLAGS) -c $(SRC)
+	gcc $(FLAGS) -c $(SRCS)
 	gcc -o $(NAME) $(FLAGS) $(OBJ) $(LIB) -I $(INC)
 
 clean :
